@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "12.2.2",
     "prom-client": "^14.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -20,6 +19,7 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.2",
+    "next": "^12.2.3-canary.0",
     "typescript": "4.7.4"
   }
 }
