@@ -1,25 +1,22 @@
 {
-  "name": "visitor-counter",
-  "version": "0.1.0",
-  "private": true,
+  "name": "visitor-counter-megafauna",
+  "version": "1.0.0",
+  "description": "FVTT Visitor Counter",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "prom-client": "^14.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n3dst4/visitor-counter.git"
   },
-  "devDependencies": {
-    "@types/node": "18.0.3",
-    "@types/react": "18.0.15",
-    "@types/react-dom": "18.0.6",
-    "eslint": "8.19.0",
-    "eslint-config-next": "12.2.2",
-    "next": "^12.2.3-canary.0",
-    "typescript": "4.7.4"
-  }
+  "workspaces": [
+    "./site"
+  ],
+  "author": "Neil de Carteret <neil@lumphammer.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n3dst4/visitor-counter/issues"
+  },
+  "homepage": "https://github.com/n3dst4/visitor-counter#readme"
 }

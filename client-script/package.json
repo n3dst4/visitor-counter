@@ -1,0 +1,11 @@
+{
+  "name": "@lumphammer/visitor-counter-client-script",
+  "version": "1.0.0",
+  "description": "Injectable script for FVTT visitor counter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Neil de Carteret <neil@lumphammer.net>",
+  "license": "ISC"
+}
