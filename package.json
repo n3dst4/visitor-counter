@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/n3dst4/visitor-counter/issues"
   },
-  "homepage": "https://github.com/n3dst4/visitor-counter#readme"
+  "homepage": "https://github.com/n3dst4/visitor-counter#readme",
+  "devDependencies": {
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-config-xo": "^0.41.0"
+  }
 }
