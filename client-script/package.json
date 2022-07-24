@@ -10,6 +10,7 @@
     "start": "npm run dev"
   },
   "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^9.269.0",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",

@@ -4,8 +4,8 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    "eslint:recommended",
-    // "airbnb-base",
+    "standard",
+    "plugin:@typescript-eslint/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -16,19 +16,58 @@ module.exports = {
     "@typescript-eslint",
   ],
   rules: {
-    // "import/no-extraneous-dependencies": [
-    //   "error",
-    //   { devDependencies: ["**/*.test.js", "**/*.spec.js", "vite.config.js"] },
-    // ],
     quotes: ["error", "double", { avoidEscape: true }],
-    // "import/extensions": ["off"],
+    semi: ["error", "always"],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "@typescript-eslint/explicit-module-boundary-types": ["off"],
+    "@typescript-eslint/no-unused-vars": ["error", { args: "none", ignoreRestSiblings: true }],
+    "react/prop-types": ["off"],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-namespace": ["warn", { allowDeclarations: true }],
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      multiline: {
+        delimiter: "comma",
+        requireLast: true,
+      },
+      singleline: {
+        delimiter: "comma",
+        requireLast: false,
+      },
+      overrides: {
+        interface: {
+          multiline: {
+            delimiter: "semi",
+            requireLast: true,
+          },
+          singleline: {
+            delimiter: "semi",
+            requireLast: true,
+          },
+        },
+      },
+    }],
   },
   overrides: [
     {
       files: ".eslintrc.cjs",
       env: {
         node: true,
-      }
-    }
-  ]
+      },
+    },
+  ],
+  globals: {
+    // Hooks: "readonly",
+    CONFIG: "readonly",
+    Actor: "readonly",
+    ActorSheet: "readonly",
+    Actors: "readonly",
+    jQuery: "readonly",
+    JQuery: "readonly",
+    mergeObject: "readonly",
+    Item: "readonly",
+  },
+
 };
