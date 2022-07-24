@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-// import "./style.css";
-// import typescriptLogo from "./typescript.svg";
 import { registerClientVisit } from "./client-script";
-
-// const foo = 4;
 
 const modules = new Map();
 modules.set("my-module", { data: { version: "2.0.0" } });
@@ -28,7 +24,6 @@ declare global {
 }
 
 window.game = new MockGame();
-
 window.Game = MockGame;
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -45,5 +40,3 @@ document.querySelector<HTMLDivElement>("#system-hit")!.addEventListener("click",
 document.querySelector<HTMLDivElement>("#module-hit")!.addEventListener("click", () => {
   registerClientVisit({ moduleName: "my-module" });
 });
-
-console.log("Creating game");

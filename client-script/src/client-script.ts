@@ -1,3 +1,4 @@
+import { timeoutPromise } from "./timoutPromise";
 
 /**
  * Check that `game` has been initialised
@@ -28,7 +29,12 @@ function getModuleVersion (moduleName: string): string {
   return module.data.version;
 }
 
-export const registerClientVisit = ({ moduleName }: {moduleName?: string} = {}) => {
+async function getCountry (): Promise<string> {
+  const ip = await fetch("https://ipapi.co/country/");
+  return await ip.text();
+}
+
+export const registerClientVisit = async ({ moduleName }: {moduleName?: string} = {}) => {
   assertGame(game);
   // fetch;
   const url = import.meta.env.COUNTER_URL;
@@ -38,5 +44,10 @@ export const registerClientVisit = ({ moduleName }: {moduleName?: string} = {}) 
     ? getModuleVersion(moduleName)
     : game.system.data.version;
   const name = isModule ? moduleName : game.system.data.name;
-  console.log({ url, isModule, foundryVersion, moduleOrSystemVersion, name });
+  const country = await timeoutPromise(
+    getCountry(),
+    3000,
+    "Unknown",
+  );
+  console.log({ url, isModule, foundryVersion, moduleOrSystemVersion, name, country });
 };
