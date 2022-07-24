@@ -5,8 +5,19 @@ import { registerClientVisit } from "./client-script";
 
 // const foo = 4;
 
+const modules = new Map();
+modules.set("my-module", { data: { version: "2.0.0" } });
+
 class MockGame {
   version = "0.0.1";
+  system = {
+    data: {
+      version: "1.0.0",
+      name: "my-system",
+    },
+  };
+
+  modules = modules;
 }
 
 declare global {
@@ -22,12 +33,17 @@ window.Game = MockGame;
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
-    <button id="go">Register hit</button>
+    <button id="system-hit">Register system hit</button>
+    <button id="module-hit">Register module hit</button>
   </div>
 `;
 
-document.querySelector<HTMLDivElement>("#go")!.addEventListener("click", () => {
-  registerClientVisit(game as Game);
+document.querySelector<HTMLDivElement>("#system-hit")!.addEventListener("click", () => {
+  registerClientVisit();
+});
+
+document.querySelector<HTMLDivElement>("#module-hit")!.addEventListener("click", () => {
+  registerClientVisit({ moduleName: "my-module" });
 });
 
 console.log("Creating game");
