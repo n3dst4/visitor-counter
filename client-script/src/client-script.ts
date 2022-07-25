@@ -1,43 +1,11 @@
-import { timeoutPromise } from "./timoutPromise";
-
-/**
- * Check that `game` has been initialised
- */
-function isGame (game: any): game is Game {
-  return game instanceof Game;
-}
-
-/**
- * Throw if `game` has not been initialized. This is hyper unlikely at runtime
- * but technically possible during a calamitous upfuckage to TS keeps us honest
- * and requires a check.
- */
-function assertGame (game: any): asserts game is Game {
-  if (!isGame(game)) {
-    throw new Error("game used before init hook");
-  }
-}
-
-// CONFIG;
-
-function getModuleVersion (moduleName: string): string {
-  assertGame(game);
-  const module = game.modules.get(moduleName);
-  if (module === undefined) {
-    throw new Error(`Module ${moduleName} not found`);
-  }
-  return module.data.version;
-}
-
-async function getCountry (): Promise<string> {
-  const ip = await fetch("https://ipapi.co/country/");
-  return await ip.text();
-}
+import { assertGame, getModuleVersion } from "./foundry-functions";
+import { getCountry, log, timeoutPromise } from "./functions";
 
 export const registerClientVisit = async ({ moduleName }: {moduleName?: string} = {}) => {
   assertGame(game);
   // fetch;
-  const url = import.meta.env.COUNTER_URL;
+  log(import.meta.env);
+  const url = import.meta.env.VITE_COUNTER_URL;
   const foundryVersion = game.version;
   const isModule = !!moduleName;
   const moduleOrSystemVersion = isModule
@@ -50,4 +18,11 @@ export const registerClientVisit = async ({ moduleName }: {moduleName?: string} 
     "Unknown",
   );
   console.log({ url, isModule, foundryVersion, moduleOrSystemVersion, name, country });
+  const parsedUrl = new URL(url);
+  const type = isModule ? "module" : "system";
+  parsedUrl.pathname = parsedUrl.pathname.replace(/\/$/, "").concat(`/${type}/${name}`);
+  parsedUrl.searchParams.set("foundry_version", foundryVersion);
+  parsedUrl.searchParams.set("version", moduleOrSystemVersion);
+  parsedUrl.searchParams.set("country", country);
+  log(parsedUrl.toString());
 };

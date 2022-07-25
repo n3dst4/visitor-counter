@@ -5,7 +5,7 @@ function wait (howLong: number) {
   });
 }
 
-export async function timeoutPromise<T> (
+export function timeoutPromise<T> (
   promise: Promise<T>,
   timeout: number,
   fallbackValue?: T,
@@ -15,3 +15,8 @@ export async function timeoutPromise<T> (
     : Promise.reject(new Error("Timeout"));
   return Promise.race([promise, wait(timeout).then(() => fallbackPromise)]);
 }
+
+export const getCountry = async (): Promise<string> =>
+  await (await fetch("https://ipapi.co/country/")).text();
+
+export const log = console.log.bind(console, "[visitor counter client]");
