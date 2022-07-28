@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "dist",
+  },
+  "include": ["./src/client-script.ts"],
+  "extends": "./tsconfig.json",
+}

@@ -16,6 +16,7 @@ export default defineConfig({
       // the proper extensions will be added
       fileName: "visitor-counter-client-script",
     },
+    minify: false,
   },
   plugins: [react()],
 });

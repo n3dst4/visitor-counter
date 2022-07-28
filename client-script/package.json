@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "npm run clean && mkdir dist && tsc --project 'tsconfig.build.json' && vite build",
     "preview": "vite preview",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "^9.269.0",
@@ -23,6 +24,7 @@
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.6.4",
     "vite": "^3.0.0"
   }

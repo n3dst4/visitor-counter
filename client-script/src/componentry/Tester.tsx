@@ -14,6 +14,14 @@ export const Tester: React.FC<{
       <h1>Tester: <code>{url}</code></h1>
       <button onClick={() => { handleHit(); }}>Register system hit</button>
       <button onClick={() => { handleHit("my-module"); }}>Register module hit</button>
+      <div>
+        <a
+          href={ `${url.replace(/hit\/?$/, "")}/metrics` }
+          target="_blank"
+        >
+          See metrics
+        </a>
+      </div>
     </div>
   );
 };
