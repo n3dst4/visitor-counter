@@ -20,3 +20,6 @@ export const getCountry = async (): Promise<string> =>
   await (await fetch("https://ipapi.co/country/")).text();
 
 export const log = console.log.bind(console, "[visitor counter client]");
+
+export const isNonZeroString = (str: string|undefined|null): str is string =>
+  ![null, undefined, ""].includes(str);
