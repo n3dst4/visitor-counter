@@ -24,7 +24,7 @@ export const registerClientVisit = async ({
   parsedUrl.searchParams.set("country", country);
   const finalUrl = parsedUrl.toString();
   log(finalUrl);
-  img = document.createElement("img");
+  const img = document.createElement("img");
   img.src = finalUrl;
   img.style.position = "absolute";
   img.setAttribute("aria-hidden", "true");

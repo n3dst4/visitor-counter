@@ -22,12 +22,9 @@ export default defineConfig({
     react(),
     checker({
       typescript: true,
-      enableBuild: true,
-      overlay: true,
-      terminal: true,
-      // eslint: {
-      //   lintCommand: 'eslint "./src/**/*.{ts,tsx}"', // for example, lint .ts & .tsx
-      // },
+      eslint: {
+        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+      },
     }),
   ],
 });

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && npm run clean && mkdir dist && ls -l && vite build && npm run declarations",
+    "build": "tsc && npm run clean && vite build && npm run declarations",
     "declarations": "tsc --project 'tsconfig.build.json'",
     "preview": "vite preview",
     "start": "npm run dev",
