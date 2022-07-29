@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run clean && mkdir dist && tsc --project 'tsconfig.build.json' && vite build",
+    "build": "tsc && npm run clean && mkdir dist && ls -l && vite build && npm run declarations",
+    "declarations": "tsc --project 'tsconfig.build.json'",
     "preview": "vite preview",
     "start": "npm run dev",
     "clean": "rimraf dist"
@@ -26,6 +27,7 @@
     "react-dom": "^18.2.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.6.4",
-    "vite": "^3.0.0"
+    "vite": "^3.0.0",
+    "vite-plugin-checker": "^0.4.9"
   }
 }

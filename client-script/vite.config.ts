@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 import react from "@vitejs/plugin-react";
-
+import checker from "vite-plugin-checker";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -18,5 +18,16 @@ export default defineConfig({
     },
     minify: false,
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    checker({
+      typescript: true,
+      enableBuild: true,
+      overlay: true,
+      terminal: true,
+      // eslint: {
+      //   lintCommand: 'eslint "./src/**/*.{ts,tsx}"', // for example, lint .ts & .tsx
+      // },
+    }),
+  ],
 });
