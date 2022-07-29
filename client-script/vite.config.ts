@@ -17,6 +17,7 @@ export default defineConfig({
       fileName: "visitor-counter-client-script",
     },
     minify: false,
+    emptyOutDir: false,
   },
   plugins: [
     react(),

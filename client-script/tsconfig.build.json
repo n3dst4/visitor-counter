@@ -4,10 +4,8 @@
     "emitDeclarationOnly": true,
     "declaration": true,
     "outDir": "dist",
+    "noEmitOnError": true
   },
   "include": ["./src/client-script.ts"],
   "extends": "./tsconfig.json",
 }
-
-
-// lib/main.ts --declaration --emitDeclarationOnly --jsx react --esModuleInterop --outDir dist
