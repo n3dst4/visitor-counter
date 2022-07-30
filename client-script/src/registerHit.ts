@@ -1,11 +1,36 @@
-import { assertGame, getModuleVersion } from "./foundry-functions";
-import { getCountry, log, timeoutPromise } from "./functions";
+import {
+  assertGame,
+  getModuleVersion,
+  getCountry,
+  isNonZeroString,
+  log,
+  timeoutPromise,
+} from "./functions";
 
-// this is the script that will be injected into a module to enable tracking
-export const registerClientVisit = async ({
+const urlVar = import.meta.env.VITE_COUNTER_URL;
+
+if (!isNonZeroString(urlVar)) {
+  throw new Error("VITE_COUNTER_URL is not defined");
+}
+
+/**
+ * Count a visit to the game.
+ */
+export const registerHit = async ({
   moduleName,
-  url,
-}: { moduleName?: string, url: string }) => {
+  counterServiceUrl = urlVar,
+}: {
+  /**
+   * Module name to count; if undefined, will count the system.
+   * @default the current system
+   */
+  moduleName?: string,
+  /**
+   * URL of the counter service
+   * @default The main counter service URL
+   */
+  counterServiceUrl?: string,
+}) => {
   const country = await timeoutPromise(getCountry(), 3000, "Unknown");
   assertGame(game);
   const foundryVersion = game.version;
@@ -14,7 +39,7 @@ export const registerClientVisit = async ({
     ? getModuleVersion(moduleName)
     : game.system.data.version;
   const name = isModule ? moduleName : game.system.data.name;
-  const parsedUrl = new URL(url);
+  const parsedUrl = new URL(counterServiceUrl);
   const type = isModule ? "module" : "system";
   parsedUrl.pathname = parsedUrl.pathname
     .replace(/\/$/, "")
@@ -33,11 +58,12 @@ export const registerClientVisit = async ({
   const promise = new Promise<void>((resolve, reject) => {
     img.addEventListener("load", () => {
       img.parentNode?.removeChild(img);
+      log("Success");
       resolve();
     });
     img.addEventListener("error", () => {
       img.parentNode?.removeChild(img);
-      reject(new Error("Failed to load initialise counter"));
+      reject(new Error("Failed to initialise counter."));
     });
   });
   document.body.appendChild(img);

@@ -19,6 +19,7 @@ module.exports = {
     quotes: ["error", "double", { avoidEscape: true }],
     semi: ["error", "always"],
     "no-use-before-define": "off",
+    "no-trailing-spaces": ["error"],
     "@typescript-eslint/no-use-before-define": ["error"],
     "comma-dangle": ["error", "always-multiline"],
     "@typescript-eslint/no-explicit-any": ["off"],

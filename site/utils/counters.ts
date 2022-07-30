@@ -15,6 +15,7 @@ export const counter = new promClient.Counter({
     "origin",
     "browser",
     "country",
+    "hash",
     "version",
     "major_version",
     "fvtt_version",

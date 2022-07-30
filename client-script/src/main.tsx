@@ -28,18 +28,18 @@ declare global {
 window.game = new MockGame();
 window.Game = MockGame;
 
-const urlsVar = import.meta.env.VITE_COUNTER_URL;
+const urlVar = import.meta.env.VITE_COUNTER_URL;
 
-if (!isNonZeroString(urlsVar)) {
+if (!isNonZeroString(urlVar)) {
   throw new Error("VITE_COUNTER_URL is not defined");
 }
 
-const urls = urlsVar.split(",");
+// TODO read extra urls from localstorage
 
 const appDiv = document.querySelector<HTMLDivElement>("#app");
 if (appDiv) {
   const root = createRoot(appDiv); // createRoot(container!) if you use TypeScript
-  root.render(<App urls={urls} />);
+  root.render(<App urls={[urlVar]} />);
 } else {
   console.error("No app div found");
 }

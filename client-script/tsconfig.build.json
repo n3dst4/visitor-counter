@@ -1,11 +1,28 @@
+// tsconfig for producing final builds.
 {
+  // start with the same settings as we use in dev.
+  "extends": "./tsconfig.json",
+
+  // we only care about the client script - we don't want declarations for the
+  // dev harness.
+  "include": ["./src/client-script.ts"],
+
   "compilerOptions": {
+    // these settings get tsc to emit a declaration file
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "outDir": "dist",
-    "noEmitOnError": true
+
+    // this is key - we want tsc to bomb out if there's an error, not struggle
+    // on and produce a half-baked result.
+    "noEmitOnError": true,
+
+    // experiment - producing a bundled declaration file.
+    "module": "AMD",
+    "isolatedModules": false,
+    "outFile": "dist/vistor-counter-script.d.ts"
+
+    // "outDir": "dist",
+    // "module": "ESNext",
   },
-  "include": ["./src/client-script.ts"],
-  "extends": "./tsconfig.json",
 }

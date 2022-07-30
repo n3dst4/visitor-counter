@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { registerClientVisit } from "../client-script";
+import { registerHit } from "../registerHit";
 
 export const Tester: React.FC<{
   url: string,
@@ -7,7 +7,7 @@ export const Tester: React.FC<{
   url,
 }) => {
   const handleHit = useCallback((moduleName?: string) => {
-    registerClientVisit({ url, moduleName });
+    registerHit({ counterServiceUrl: url, moduleName });
   }, [url]);
   return (
     <div>

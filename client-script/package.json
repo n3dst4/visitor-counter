@@ -1,8 +1,13 @@
 {
-  "name": "client-script",
+  "name": "@lumphammer/fvtt-counter-client-script",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && npm run declarations && vite build",
