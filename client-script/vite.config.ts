@@ -11,10 +11,10 @@ export default defineConfig({
   // https://vitejs.dev/guide/build.html#library-mode
   build: {
     lib: {
-      entry: resolve(__dirname, "src/client-script.ts"),
+      entry: resolve(__dirname, "src/registerHit.ts"),
       name: "visitor-counter-client-script",
       // the proper extensions will be added
-      fileName: "visitor-counter-client-script",
+      fileName: "registerHit",
     },
     minify: false,
     emptyOutDir: false,

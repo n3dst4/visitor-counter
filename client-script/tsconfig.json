@@ -18,6 +18,7 @@
     "types": [
       // "react",
       "@league-of-foundry-developers/foundry-vtt-types",
+      "vite/client"
     ],
     "jsx": "react-jsx"
   },

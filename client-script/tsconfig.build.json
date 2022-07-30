@@ -5,7 +5,7 @@
 
   // we only care about the client script - we don't want declarations for the
   // dev harness.
-  "include": ["./src/client-script.ts"],
+  "include": ["./src/registerHit.ts"],
 
   "compilerOptions": {
     // these settings get tsc to emit a declaration file
@@ -18,11 +18,11 @@
     "noEmitOnError": true,
 
     // experiment - producing a bundled declaration file.
-    "module": "AMD",
-    "isolatedModules": false,
-    "outFile": "dist/vistor-counter-script.d.ts"
+    // "module": "AMD",
+    // "isolatedModules": false,
+    // "outFile": "dist/vistor-counter-script.d.ts"
 
-    // "outDir": "dist",
+    "outDir": "dist",
     // "module": "ESNext",
   },
 }
