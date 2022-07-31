@@ -53,9 +53,9 @@ export default async function handler(
   const hash = createHmac('sha256', data).digest('hex');
 
   // headers
-  const referer = new URL(req.headers.referer || "");
-  const origin = referer.origin;
-  const scheme = referer.protocol;
+  const referer = req.headers.referer ? new URL(req.headers.referer) : null;
+  const origin = referer?.origin ?? "unknown";
+  const scheme = referer?.protocol ?? "unknown";
 
   const payload: CounterLabels<typeof counter> = {
     type,

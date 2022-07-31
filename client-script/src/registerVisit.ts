@@ -1,4 +1,3 @@
-
 import {
   assertGame,
   getModuleVersion,
@@ -18,7 +17,7 @@ if (!isNonZeroString(urlVar)) {
 /**
  * Count a visit to the game.
  */
-export const registerHit = async ({
+export const registerVisit = async ({
   moduleName,
   counterServiceUrl = urlVar,
 }: {
@@ -33,6 +32,7 @@ export const registerHit = async ({
    */
   counterServiceUrl?: string,
 } = {}) => {
+  // gather all the info we need
   const country = await timeoutPromise(getCountry(), 3000, "Unknown");
   assertGame(game);
   const fvttVersion = game.version;
@@ -41,29 +41,40 @@ export const registerHit = async ({
     ? getModuleVersion(moduleName)
     : game.system.data.version;
   const name = isModule ? moduleName : game.system.data.name;
-  const parsedUrl = new URL(counterServiceUrl);
   const type = isModule ? "module" : "system";
+  const username = game.user?.name ?? "unknown";
+  const usernameHash = await hashIfPossible(username);
+
+  // construct the URL for the counter service
+  const parsedUrl = new URL(counterServiceUrl);
   parsedUrl.pathname = parsedUrl.pathname
     .replace(/\/$/, "")
     .concat(`/${type}/${name}`);
-
-  const username = game.user?.name ?? "unknown";
-  const ua = window.navigator.userAgent;
-  const identifier = `${username} on ${ua}`;
-  const usernameHash = await hashIfPossible(identifier);
-
   parsedUrl.searchParams.set("fvtt_version", fvttVersion);
   parsedUrl.searchParams.set("version", moduleOrSystemVersion);
   parsedUrl.searchParams.set("country", country);
-  parsedUrl.searchParams.set("username_hash", usernameHash.toString());
+  parsedUrl.searchParams.set("username_hash", usernameHash);
+  parsedUrl.searchParams.set("cache_buster", Date.now().toString());
   const finalUrl = parsedUrl.toString();
-  log(finalUrl);
+
+  log("Registering visit", {
+    country,
+    fvttVersion,
+    moduleOrSystemVersion,
+    name,
+    type,
+    usernameHash,
+    finalUrl,
+  });
+
+  // create the image element that will be used to send the request
   const img = document.createElement("img");
   img.src = finalUrl;
   img.style.position = "absolute";
   img.setAttribute("aria-hidden", "true");
   img.setAttribute("alt", "");
 
+  // resolve or reject the promise when the "image" loads or fails
   const promise = new Promise<void>((resolve, reject) => {
     img.addEventListener("load", () => {
       img.parentNode?.removeChild(img);
@@ -75,6 +86,8 @@ export const registerHit = async ({
       reject(new Error("Failed to initialise counter."));
     });
   });
+
+  // append the image to the document
   document.body.appendChild(img);
   return await promise;
 };

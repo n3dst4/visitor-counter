@@ -1,19 +1,19 @@
 import React, { useCallback } from "react";
-import { registerHit } from "../registerHit";
+import { registerVisit } from "../registerVisit";
 
 export const Tester: React.FC<{
   url: string,
 }> = ({
   url,
 }) => {
-  const handleHit = useCallback((moduleName?: string) => {
-    registerHit({ counterServiceUrl: url, moduleName });
+  const handleVisit = useCallback((moduleName?: string) => {
+    registerVisit({ counterServiceUrl: url, moduleName });
   }, [url]);
   return (
     <div>
       <h1>Tester: <code>{url}</code></h1>
-      <button onClick={() => { handleHit(); }}>Register system hit</button>
-      <button onClick={() => { handleHit("my-module"); }}>Register module hit</button>
+      <button onClick={() => { handleVisit(); }}>Register system visit</button>
+      <button onClick={() => { handleVisit("my-module"); }}>Register module visit</button>
       <div>
         <a
           href={ `${url.replace(/hit\/?$/, "")}/metrics` }

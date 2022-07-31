@@ -34,12 +34,12 @@ if (!isNonZeroString(urlVar)) {
   throw new Error("VITE_COUNTER_URL is not defined");
 }
 
-// TODO read extra urls from localstorage
+const urls = [urlVar, ...import.meta.env.VITE_EXTRA_COUNTER_URLS?.split(",")];
 
 const appDiv = document.querySelector<HTMLDivElement>("#app");
 if (appDiv) {
-  const root = createRoot(appDiv); // createRoot(container!) if you use TypeScript
-  root.render(<App urls={[urlVar]} />);
+  const root = createRoot(appDiv);
+  root.render(<App urls={urls} />);
 } else {
   console.error("No app div found");
 }

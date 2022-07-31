@@ -1,41 +1,40 @@
 /**
- *
+ * Returns a promise which will resolve after the given number of milliseconds
  */
-function wait (howLong: number) {
+function wait (milliseconds: number) {
   return new Promise((resolve) => {
-    setTimeout(resolve, howLong);
+    setTimeout(resolve, milliseconds);
   });
 }
 
 /**
  * Wrap a promise so that it will time out and either reject, or return a
- * fallback value if one is given.
+ * fallback value if one is given, if it hasn't already resolved or rejected
+ * after the given number of milliseconds.
  */
 export function timeoutPromise<T> (
   promise: Promise<T>,
-  timeout: number,
+  milliseconds: number,
   fallbackValue?: T,
 ): Promise<T> {
-  const fallbackPromise = fallbackValue
+  const fallback = fallbackValue
     ? Promise.resolve(fallbackValue)
     : Promise.reject(new Error("Timeout"));
-  return Promise.race([promise, wait(timeout).then(() => fallbackPromise)]);
+  return Promise.race([promise, wait(milliseconds).then(() => fallback)]);
 }
 
-/** fetch geolocated country */
+/** Fetch geolocated country */
 export const getCountry = async (): Promise<string> =>
   await (await fetch("https://ipapi.co/country/")).text();
 
-/** bound log function to prefix messages */
-export const log = console.log.bind(console, "[visitor counter client]");
+/** Bound log function to prefix messages */
+export const log = console.log.bind(console, "[Counter]");
 
 /** Return true if `str` is a string with at least one character */
 export const isNonZeroString = (str: string|undefined|null): str is string =>
   ![null, undefined, ""].includes(str);
 
-/**
- * Check that `game` has been initialised
- */
+/** Check that `game` has been initialised */
 function isGame (game: any): game is Game {
   return game instanceof Game;
 }
