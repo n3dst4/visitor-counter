@@ -17,7 +17,7 @@ if (!isNonZeroString(urlVar)) {
 /**
  * Count a visit to the game.
  */
-export const registerVisit = async ({
+export const countVisit = async ({
   moduleName,
   counterServiceUrl = urlVar,
 }: {
@@ -57,7 +57,7 @@ export const registerVisit = async ({
   parsedUrl.searchParams.set("cache_buster", Date.now().toString());
   const finalUrl = parsedUrl.toString();
 
-  log("Registering visit", {
+  log("Counting visit", {
     country,
     fvttVersion,
     moduleOrSystemVersion,

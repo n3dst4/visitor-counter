@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { registerVisit } from "../registerVisit";
+import { countVisit } from "../countVisit";
 
 export const Tester: React.FC<{
   url: string,
@@ -7,7 +7,7 @@ export const Tester: React.FC<{
   url,
 }) => {
   const handleVisit = useCallback((moduleName?: string) => {
-    registerVisit({ counterServiceUrl: url, moduleName });
+    countVisit({ counterServiceUrl: url, moduleName });
   }, [url]);
   return (
     <div>

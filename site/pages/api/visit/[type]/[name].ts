@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {
-  counter,
+  visitCounter,
 } from '../../../../utils/counters';
 import { createHmac } from "crypto";
 import { Counter, LabelValues } from 'prom-client';
@@ -57,7 +57,7 @@ export default async function handler(
   const origin = referer?.origin ?? "unknown";
   const scheme = referer?.protocol ?? "unknown";
 
-  const payload: CounterLabels<typeof counter> = {
+  const payload: CounterLabels<typeof visitCounter> = {
     type,
     name,
     origin,
@@ -72,6 +72,6 @@ export default async function handler(
   }
   console.log(payload);
   
-  counter.inc(payload);
+  visitCounter.inc(payload);
   res.redirect("/1x1_transparent.gif");
 }

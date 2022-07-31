@@ -6,8 +6,8 @@ import promClient from "prom-client";
 export const registry = new promClient.Registry();
 promClient.collectDefaultMetrics({ register: registry });
 
-export const counter = new promClient.Counter({
-  name: "hits",
+export const visitCounter = new promClient.Counter({
+  name: "visits",
   help: "number of times it's been hit",
   labelNames: [
     "type",
