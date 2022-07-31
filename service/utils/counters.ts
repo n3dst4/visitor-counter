@@ -22,5 +22,14 @@ export const visitCounter = new promClient.Counter({
     "fvtt_version",
     "fvtt_major_version"
   ],
-  registers: [registry], //
+  registers: [registry],
+});
+
+export const metricsCounter = new promClient.Counter({
+  name: "metrics",
+  help: "number of times metrics have been collected",
+  labelNames: [
+    "user_agent"
+  ],
+  registers: [registry],
 });

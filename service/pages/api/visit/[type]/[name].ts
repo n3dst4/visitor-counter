@@ -47,8 +47,8 @@ export default async function handler(
   const fvtt_major_version = getMajorVersion(fvtt_version);
 
   // build up anonymous hash
-  const ip = req.socket.remoteAddress || "";
-  const ua = req.headers["user-agent"] || "";
+  const ip = req.socket.remoteAddress || "unknown";
+  const ua = req.headers["user-agent"] || "unknown";
   const data = JSON.stringify({ip, ua, username_hash, salt});
   const hash = createHmac('sha256', data).digest('hex');
 
