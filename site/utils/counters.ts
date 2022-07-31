@@ -14,6 +14,7 @@ export const counter = new promClient.Counter({
     "name",
     "origin",
     "browser",
+    "scheme",
     "country",
     "hash",
     "version",

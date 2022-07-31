@@ -18,6 +18,7 @@ export default defineConfig({
     },
     minify: false,
     emptyOutDir: false,
+    target: "es2015",
   },
   plugins: [
     react(),

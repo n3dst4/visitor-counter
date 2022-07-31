@@ -23,6 +23,8 @@ function isModuleOrSystem(value: string): value is ModuleOrSystem {
 // can't find it.
 type CounterLabels<T> = T extends Counter<infer U> ? LabelValues<U> : never;
 
+const getMajorVersion = (version: string) => version.split(".")[0];
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -37,25 +39,30 @@ export default async function handler(
 
   const name = ensureString(query.name);
   const version = ensureString(query.version);
-  const major_version = ensureString(query.major_version);
   const fvtt_version = ensureString(query.fvtt_version);
-  const fvtt_major_version = ensureString(query.fvtt_major_version);
   const country = ensureString(query.country);
+  const username_hash = ensureString(query.username_hash);
+
+  const major_version = getMajorVersion(version);
+  const fvtt_major_version = getMajorVersion(fvtt_version);
 
   // build up anonymous hash
   const ip = req.socket.remoteAddress || "";
   const ua = req.headers["user-agent"] || "";
-  const data = JSON.stringify({ip, ua, salt});
+  const data = JSON.stringify({ip, ua, username_hash, salt});
   const hash = createHmac('sha256', data).digest('hex');
 
   // headers
-  const origin = new URL(req.headers.referer || "").origin;
+  const referer = new URL(req.headers.referer || "");
+  const origin = referer.origin;
+  const scheme = referer.protocol;
 
   const payload: CounterLabels<typeof counter> = {
     type,
     name,
     origin,
     // browser,
+    scheme,
     hash,
     country,
     version,

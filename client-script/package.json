@@ -5,9 +5,11 @@
   "type": "module",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "import": "./dist/registerHit.js",
+      "types": "./dist/registerHit.d.ts"
     }
   },
+  "main": "./dist/registerHit.js",
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && npm run declarations && vite build",

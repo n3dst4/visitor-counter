@@ -1,3 +1,4 @@
+
 import {
   assertGame,
   getModuleVersion,
@@ -5,6 +6,7 @@ import {
   isNonZeroString,
   log,
   timeoutPromise,
+  hashIfPossible,
 } from "./functions";
 
 const urlVar = import.meta.env.VITE_COUNTER_URL;
@@ -30,10 +32,10 @@ export const registerHit = async ({
    * @default The main counter service URL
    */
   counterServiceUrl?: string,
-}) => {
+} = {}) => {
   const country = await timeoutPromise(getCountry(), 3000, "Unknown");
   assertGame(game);
-  const foundryVersion = game.version;
+  const fvttVersion = game.version;
   const isModule = !!moduleName;
   const moduleOrSystemVersion = isModule
     ? getModuleVersion(moduleName)
@@ -44,9 +46,16 @@ export const registerHit = async ({
   parsedUrl.pathname = parsedUrl.pathname
     .replace(/\/$/, "")
     .concat(`/${type}/${name}`);
-  parsedUrl.searchParams.set("foundry_version", foundryVersion);
+
+  const username = game.user?.name ?? "unknown";
+  const ua = window.navigator.userAgent;
+  const identifier = `${username} on ${ua}`;
+  const usernameHash = await hashIfPossible(identifier);
+
+  parsedUrl.searchParams.set("fvtt_version", fvttVersion);
   parsedUrl.searchParams.set("version", moduleOrSystemVersion);
   parsedUrl.searchParams.set("country", country);
+  parsedUrl.searchParams.set("username_hash", usernameHash.toString());
   const finalUrl = parsedUrl.toString();
   log(finalUrl);
   const img = document.createElement("img");
