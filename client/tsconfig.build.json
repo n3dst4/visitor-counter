@@ -17,12 +17,6 @@
     // on and produce a half-baked result.
     "noEmitOnError": true,
 
-    // experiment - producing a bundled declaration file.
-    // "module": "AMD",
-    // "isolatedModules": false,
-    // "outFile": "dist/vistor-counter-script.d.ts"
-
     "outDir": "dist",
-    // "module": "ESNext",
   },
 }

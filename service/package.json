@@ -1,5 +1,5 @@
 {
-  "name": "visitor-counter",
+  "name": "@lumphammer/fvtt-visitor-counter-service",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -1,15 +1,15 @@
 {
-  "name": "@lumphammer/fvtt-counter-client-script",
+  "name": "@lumphammer/fvtt-visitor-counter-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/registerHit.js",
-      "types": "./dist/registerHit.d.ts"
+      "import": "./dist/countVisit.js",
+      "types": "./dist/countVisit.d.ts"
     }
   },
-  "main": "./dist/registerHit.js",
+  "main": "./dist/countVisit.js",
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && npm run declarations && vite build",
