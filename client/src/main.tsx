@@ -7,7 +7,7 @@ const modules = new Map();
 modules.set("my-module", { data: { version: "2.0.0" } });
 
 class MockGame {
-  version = "0.0.1";
+  version = "9.261";
   system = {
     data: {
       version: "1.0.0",

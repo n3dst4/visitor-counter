@@ -1,7 +1,7 @@
 /**
  * Returns a promise which will resolve after the given number of milliseconds
  */
-function wait (milliseconds: number) {
+export function wait (milliseconds: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });

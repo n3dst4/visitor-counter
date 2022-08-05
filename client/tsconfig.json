@@ -20,7 +20,8 @@
       "@league-of-foundry-developers/foundry-vtt-types",
       "vite/client"
     ],
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

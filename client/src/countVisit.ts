@@ -20,6 +20,7 @@ if (!isNonZeroString(urlVar)) {
 export const countVisit = async ({
   moduleName,
   counterServiceUrl = urlVar,
+  country: countryArg,
 }: {
   /**
    * Module name to count; if undefined, will count the system.
@@ -31,9 +32,14 @@ export const countVisit = async ({
    * @default The main counter service URL
    */
   counterServiceUrl?: string,
+  /**
+   * Country to count; if undefined, will use ipapi.co (this is mainly for
+   * testing) (yes I know about mocks, thanks).
+   */
+  country?: string,
 } = {}) => {
   // gather all the info we need
-  const country = await timeoutPromise(getCountry(), 3000, "Unknown");
+  const country = countryArg || await timeoutPromise(getCountry(), 3000, "Unknown");
   assertGame(game);
   const fvttVersion = game.version;
   const isModule = !!moduleName;

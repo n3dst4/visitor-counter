@@ -19,6 +19,8 @@
     "clean": "rimraf dist"
   },
   "devDependencies": {
+    "@emotion/eslint-plugin": "^11.10.0",
+    "@emotion/react": "^11.10.0",
     "@league-of-foundry-developers/foundry-vtt-types": "^9.269.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",

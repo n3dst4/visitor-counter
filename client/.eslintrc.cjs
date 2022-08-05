@@ -14,6 +14,7 @@ module.exports = {
   },
   plugins: [
     "@typescript-eslint",
+    "@emotion",
   ],
   rules: {
     quotes: ["error", "double", { avoidEscape: true }],
