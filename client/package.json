@@ -1,6 +1,5 @@
 {
   "name": "@lumphammer/fvtt-visitor-counter-client",
-  "private": false,
   "version": "1.0.0",
   "type": "module",
   "exports": {
@@ -10,6 +9,9 @@
     }
   },
   "main": "./dist/visitorCounterClient.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && npm run declarations && vite build",
