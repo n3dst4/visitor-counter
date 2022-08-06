@@ -28,7 +28,7 @@ export const getCountry = async (): Promise<string> =>
   await (await fetch("https://ipapi.co/country/")).text();
 
 /** Bound log function to prefix messages */
-export const log = console.log.bind(console, "[Counter]");
+export const log = console.log.bind(console, "[Visitors]");
 
 /** Return true if `str` is a string with at least one character */
 export const isNonZeroString = (str: string|undefined|null): str is string =>
