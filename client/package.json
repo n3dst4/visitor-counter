@@ -1,6 +1,6 @@
 {
   "name": "@lumphammer/fvtt-visitor-counter-client",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "type": "module",
   "exports": {
