@@ -8,9 +8,9 @@ import {
   hashIfPossible,
 } from "./functions";
 
-const urlVar = import.meta.env.VITE_COUNTER_URL;
+const envUrl = import.meta.env.VITE_COUNTER_URL;
 
-if (!isNonZeroString(urlVar)) {
+if (!isNonZeroString(envUrl)) {
   throw new Error("VITE_COUNTER_URL is not defined");
 }
 
@@ -19,7 +19,7 @@ if (!isNonZeroString(urlVar)) {
  */
 export const countVisit = async ({
   moduleName,
-  counterServiceUrl = urlVar,
+  counterServiceUrl = envUrl,
   country: countryArg,
 }: {
   /**

@@ -5,7 +5,7 @@
 
   // we only care about the client script - we don't want declarations for the
   // dev harness.
-  "include": ["./src/countVisit.ts"],
+  "include": ["./src/visitorCounterClient.ts"],
 
   "compilerOptions": {
     // these settings get tsc to emit a declaration file

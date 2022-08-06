@@ -5,11 +5,11 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/countVisit.js",
-      "types": "./dist/countVisit.d.ts"
+      "import": "./dist/visitorCounterClient.js",
+      "types": "./dist/visitorCounterClient.d.ts"
     }
   },
-  "main": "./dist/countVisit.js",
+  "main": "./dist/visitorCounterClient.js",
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && npm run declarations && vite build",
