@@ -17,7 +17,7 @@ export const Tester: React.FC<{
   }, [url]);
   const [systemInFlight, setSystemInFlight] = React.useState(false);
 
-  const [auto, setAuto] = React.useState(true);
+  const [auto, setAuto] = React.useState(false);
   const autoRef = useRef(auto);
   autoRef.current = auto;
 
@@ -52,9 +52,9 @@ export const Tester: React.FC<{
     };
   }, [handleModuleVisit]);
 
-  useEffect(() => {
-    startAuto();
-  }, [startAuto]);
+  // useEffect(() => {
+  //   startAuto();
+  // }, [startAuto]);
 
   return (
     <div
