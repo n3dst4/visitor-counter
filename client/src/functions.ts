@@ -8,19 +8,17 @@ export function wait (milliseconds: number) {
 }
 
 /**
- * Wrap a promise so that it will time out and either reject, or return a
- * fallback value if one is given, if it hasn't already resolved or rejected
- * after the given number of milliseconds.
+ * Wrap a promise so that it will time out and reject if it hasn't resolved or
+ * rejected after the given number of milliseconds.
  */
 export function timeoutPromise<T> (
   promise: Promise<T>,
   milliseconds: number,
-  fallbackValue?: T,
 ): Promise<T> {
-  const fallback = fallbackValue
-    ? Promise.resolve(fallbackValue)
-    : Promise.reject(new Error("Timeout"));
-  return Promise.race([promise, wait(milliseconds).then(() => fallback)]);
+  const racer = wait(milliseconds).then(() =>
+    Promise.reject(new Error("Timeout")),
+  );
+  return Promise.race([promise, racer]);
 }
 
 /** Fetch geolocated country */

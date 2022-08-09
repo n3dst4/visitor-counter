@@ -39,7 +39,7 @@ export const countVisit = async ({
   country?: string,
 } = {}) => {
   // gather all the info we need
-  const country = countryArg || await timeoutPromise(getCountry(), 3000, "Unknown");
+  const country = countryArg || await timeoutPromise(getCountry(), 3000).catch(() => "Unknown");
   assertGame(game);
   const fvttVersion = game.version;
   const isModule = !!moduleName;
