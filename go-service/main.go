@@ -15,19 +15,19 @@ import (
 var salt string = "lkdfjbnavk;jdfba;kdj"
 
 // gifFromCopilot := "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-var gifInBase64 = "R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
-var gifBytes, _ = base64.StdEncoding.DecodeString(gifInBase64)
+var gifBytes, _ = base64.StdEncoding.DecodeString("R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==")
 
 var logger = log.New(os.Stderr, "[visitor counter]", log.LstdFlags)
 
 func getVisit(c *gin.Context) {
 	// get the response out to the client asap
 	c.Header("Content-Type", "image/gif")
+	c.Header("Content-Disposition", `attachment; filename="1x1transparent.gif"`)
 	c.Data(http.StatusOK, "image/gif", gifBytes)
 
 	// get all the intersting data out of the context
 	headers := squashHeaders(c.Request.Header)
-	label, err := createLabel(
+	label := createLabel(
 		&createLabelArgs{
 			country:       c.Query("country"),
 			fvtt_version:  c.Query("fvtt_version"),
@@ -42,12 +42,8 @@ func getVisit(c *gin.Context) {
 		},
 	)
 
-	// deal with logging the visit in a goroutine
-	go registerVisit(label)
-
-	if err != nil {
-		logger.Printf("error creating label: %s", err)
-	}
+	// shove it in the channel, it will get picked up by the goroutine
+	visitChan <- label
 }
 
 func getMetrics(c *gin.Context) {
@@ -59,23 +55,21 @@ func getMetrics(c *gin.Context) {
 	c.Data(http.StatusOK, "text/plain", []byte(output))
 }
 
-func MapExample() {
-	foo := make(map[string]int64)
-	foo["bar"] = 1
-	foo["baz"]++
-	foo["baz"]++
-	fmt.Println(foo["corge"]) // 0
-	fmt.Println(foo["bar"])   // 1
-	fmt.Println(foo["baz"])   // 2
+func getRoot(c *gin.Context) {
+	c.Data(http.StatusOK, "text/html", []byte("<html><h1>visitor counter</h1></html>\n"))
 }
 
 func main() {
+	go updateMetrics(visitChan, metrics)
 	r := gin.Default()
-	// good enough for now 9working in caddy
+	// good enough for now (working in caddy)
 	// see https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies
 	r.SetTrustedProxies([]string{"127.0.0.1"})
 	r.GET("/api/visit/:type/:name", getVisit)
 	r.GET("/api/metrics", getMetrics)
+	r.GET("/visit/:type/:name", getVisit)
+	r.GET("/metrics", getMetrics)
+	r.GET("/", getRoot)
 	r.Run(":8080")
 }
 

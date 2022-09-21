@@ -1,12 +1,20 @@
 package main
 
-import "strings"
+import (
+	"crypto/sha256"
+	"encoding/json"
+	"fmt"
+	"net/url"
+	"strings"
+)
 
+// Given a dot-separated version string, return the major version (first/most
+// significant part)
 func getMajorVersion(version string) string {
 	return strings.Split(version, ".")[0]
 }
 
-// given a headers object, return a simplified version where all the keys are
+// Given a headers object, return a simplified version where all the keys are
 // lowercased and all the values are strings
 func squashHeaders(headers map[string][]string) map[string]string {
 	squashed := make(map[string]string)
@@ -14,4 +22,71 @@ func squashHeaders(headers map[string][]string) map[string]string {
 		squashed[strings.ToLower(k)] = strings.Join(v, ",")
 	}
 	return squashed
+}
+
+// Given a bunch of properties, make a label for the metrics
+func createLabel(args *createLabelArgs) string {
+	// build up anonymous hash. we don't want to record ip, user agent, or
+	// username hash, we only want to build up a hash that is unique to the visit.
+	hash := "unknown"
+	json, jsonErr := json.Marshal(
+		map[string]string{
+			"ip":            args.ip,
+			"ua":            args.ua,
+			"username_hash": args.username_hash,
+			"salt":          args.salt,
+		},
+	)
+	if jsonErr == nil {
+		hash = fmt.Sprintf("%x", sha256.Sum256(json))
+	} else {
+		logger.Printf("error creating hash: %s", jsonErr)
+		hash = "unknown"
+	}
+
+	major_version := getMajorVersion(args.version)
+	fvtt_major_version := getMajorVersion(args.fvtt_version)
+
+	// use the referer to get the origin and scheme
+	parsedReferer, urlErr := url.Parse(args.referer)
+	var origin string
+	var scheme string
+	if urlErr == nil {
+		hostname := parsedReferer.Hostname()
+		port := parsedReferer.Port()
+		scheme = parsedReferer.Scheme
+		if port != "" {
+			port = ":" + port
+		}
+		origin = fmt.Sprintf("%s://%s%s", scheme, hostname, port)
+	} else {
+		logger.Printf("Error parsing referer: %s", urlErr)
+		origin = "unknown"
+		scheme = "unknown"
+	}
+
+	// visits{type="system",name="investigator",origin="https://fvtt-testing.lumphammer.net",scheme="https:",hash="55f0927173b82657fcfce0d3b262d0b04a746bdc26403949d2d5a33d7e514310",country="GB",version="5.1.2",major_version="5",fvtt_version="10.285",fvtt_major_version="10"} 2
+	label := fmt.Sprintf(
+		`visits{type="%s",name="%s",origin="%s",scheme="%s",hash="%s",country="%s",version="%s",major_version="%s",fvtt_version="%s",fvtt_major_version="%s"}`,
+		args.visitType,
+		args.name,
+		origin,
+		scheme,
+		hash,
+		args.country,
+		args.version,
+		major_version,
+		args.fvtt_version,
+		fvtt_major_version,
+	)
+	return label
+}
+
+// create a shallow copy of a map
+func copyMap[K comparable, V any](m map[K]V) map[K]V {
+	m2 := make(map[K]V)
+	for k, v := range m {
+		m2[k] = v
+	}
+	return m2
 }
