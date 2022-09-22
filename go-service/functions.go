@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const COLLECTOR = "go_service"
+
 // Given a dot-separated version string, return the major version (first/most
 // significant part)
 func getMajorVersion(version string) string {
@@ -24,8 +26,21 @@ func squashHeaders(headers map[string][]string) map[string]string {
 	return squashed
 }
 
+type createVisitLabelArgs struct {
+	country       string
+	fvtt_version  string
+	ip            string
+	name          string
+	salt          string
+	ua            string
+	username_hash string
+	version       string
+	visitType     string
+	referer       string
+}
+
 // Given a bunch of properties, make a label for the metrics
-func createLabel(args *createLabelArgs) string {
+func createVisitLabel(args *createVisitLabelArgs) string {
 	// build up anonymous hash. we don't want to record ip, user agent, or
 	// username hash, we only want to build up a hash that is unique to the visit.
 	hash := "unknown"
@@ -67,7 +82,7 @@ func createLabel(args *createLabelArgs) string {
 
 	// visits{type="system",name="investigator",origin="https://fvtt-testing.lumphammer.net",scheme="https:",hash="55f0927173b82657fcfce0d3b262d0b04a746bdc26403949d2d5a33d7e514310",country="GB",version="5.1.2",major_version="5",fvtt_version="10.285",fvtt_major_version="10"} 2
 	label := fmt.Sprintf(
-		`visits{type="%s",name="%s",origin="%s",scheme="%s",hash="%s",country="%s",version="%s",major_version="%s",fvtt_version="%s",fvtt_major_version="%s"}`,
+		`visits{type="%s",name="%s",origin="%s",scheme="%s",hash="%s",country="%s",version="%s",major_version="%s",fvtt_version="%s",fvtt_major_version="%s,collector="%s"}`,
 		args.visitType,
 		args.name,
 		origin,
@@ -78,15 +93,11 @@ func createLabel(args *createLabelArgs) string {
 		major_version,
 		args.fvtt_version,
 		fvtt_major_version,
+		COLLECTOR,
 	)
 	return label
 }
 
-// create a shallow copy of a map
-func copyMap[K comparable, V any](m map[K]V) map[K]V {
-	m2 := make(map[K]V)
-	for k, v := range m {
-		m2[k] = v
-	}
-	return m2
+func createCollectionLabel(userAgent string) string {
+	return fmt.Sprintf(`collection{user_agent="%s"}`, userAgent)
 }
