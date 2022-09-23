@@ -99,5 +99,5 @@ func createVisitLabel(args *createVisitLabelArgs) string {
 }
 
 func createCollectionLabel(userAgent string) string {
-	return fmt.Sprintf(`collection{user_agent="%s"}`, userAgent)
+	return fmt.Sprintf(`collections{user_agent="%s"}`, userAgent)
 }
