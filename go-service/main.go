@@ -61,7 +61,7 @@ func getRoot(c *gin.Context) {
 	c.Data(http.StatusOK, "text/html", []byte("<html><h1>visitor counter</h1></html>\n"))
 }
 
-func main() {
+func setUpRouter() *gin.Engine {
 	r := gin.Default()
 	// good enough for now (working in caddy)
 	// see https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies
@@ -74,6 +74,11 @@ func main() {
 	r.GET("/metrics", getMetrics)
 	// root route
 	r.GET("/", getRoot)
+	return r
+}
+
+func main() {
+	r := setUpRouter()
 	// start the server
 	r.Run(":9876")
 }
