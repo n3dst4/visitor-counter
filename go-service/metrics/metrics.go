@@ -33,9 +33,9 @@ func NewCounter(name string, help string) Counter {
 	return c
 }
 
-func (c Counter) Inc(s string) {
+func (c Counter) Inc(data map[string]string) {
 	// shove it in the channel, it will get picked up by the goroutine
-	c.channel <- s
+	c.channel <- makeLabel(c.name, data)
 }
 
 func (c Counter) Format() string {

@@ -27,7 +27,7 @@ func getVisit(c *gin.Context) {
 
 	// get all the intersting data out of the context
 	headers := squashHeaders(c.Request.Header)
-	label := createVisitLabel(
+	labelData := makeVisitLabelData(
 		&createVisitLabelArgs{
 			country:       c.Query("country"),
 			fvtt_version:  c.Query("fvtt_version"),
@@ -42,16 +42,15 @@ func getVisit(c *gin.Context) {
 		},
 	)
 
-	visitMetrics.Inc(label)
+	visitMetrics.Inc(labelData)
 }
 
 func getMetrics(c *gin.Context) {
 	headers := squashHeaders(c.Request.Header)
-	label := createCollectionLabel(headers["user-agent"])
 	// there's almost a race here, because .Inc is async so you may not see it
 	// reflected in the results a few lines down. This is fine - the event is
 	// still getting recorded and will be counted in due course.
-	collectionMetrics.Inc(label)
+	collectionMetrics.Inc(map[string]string{"user_agent": headers["user-agent"]})
 	output := visitMetrics.Format()
 	output += "\n"
 	output += collectionMetrics.Format()
@@ -59,7 +58,6 @@ func getMetrics(c *gin.Context) {
 }
 
 func getRoot(c *gin.Context) {
-	// c.Redirect(http.StatusMovedPermanently, ")
 	c.Data(http.StatusOK, "text/html", []byte("<html><h1>visitor counter</h1></html>\n"))
 }
 

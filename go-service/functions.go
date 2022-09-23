@@ -40,7 +40,7 @@ type createVisitLabelArgs struct {
 }
 
 // Given a bunch of properties, make a label for the metrics
-func createVisitLabel(args *createVisitLabelArgs) string {
+func makeVisitLabelData(args *createVisitLabelArgs) map[string]string {
 	// build up anonymous hash. we don't want to record ip, user agent, or
 	// username hash, we only want to build up a hash that is unique to the visit.
 	hash := "unknown"
@@ -80,24 +80,17 @@ func createVisitLabel(args *createVisitLabelArgs) string {
 		scheme = "unknown"
 	}
 
-	// visits{type="system",name="investigator",origin="https://fvtt-testing.lumphammer.net",scheme="https:",hash="55f0927173b82657fcfce0d3b262d0b04a746bdc26403949d2d5a33d7e514310",country="GB",version="5.1.2",major_version="5",fvtt_version="10.285",fvtt_major_version="10"} 2
-	label := fmt.Sprintf(
-		`visits{type="%s",name="%s",origin="%s",scheme="%s",hash="%s",country="%s",version="%s",major_version="%s",fvtt_version="%s",fvtt_major_version="%s",collector="%s"}`,
-		args.visitType,
-		args.name,
-		origin,
-		scheme,
-		hash,
-		args.country,
-		args.version,
-		major_version,
-		args.fvtt_version,
-		fvtt_major_version,
-		COLLECTOR,
-	)
-	return label
-}
-
-func createCollectionLabel(userAgent string) string {
-	return fmt.Sprintf(`collections{user_agent="%s"}`, userAgent)
+	return map[string]string{
+		"type":               args.visitType,
+		"name":               args.name,
+		"origin":             origin,
+		"scheme":             scheme,
+		"hash":               hash,
+		"country":            args.country,
+		"version":            args.version,
+		"major_version":      major_version,
+		"fvtt_version":       args.fvtt_version,
+		"fvtt_major_version": fvtt_major_version,
+		"collector":          COLLECTOR,
+	}
 }
