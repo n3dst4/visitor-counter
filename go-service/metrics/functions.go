@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -16,8 +17,13 @@ func copyMap[K comparable, V any](m map[K]V) map[K]V {
 
 func makeLabel(name string, data map[string]string) string {
 	label := fmt.Sprintf(`%s{`, name)
-	for k, v := range data {
-		label += fmt.Sprintf(`%s="%s",`, k, v)
+	sorted_keys := make([]string, 0, len(data))
+	for k := range data {
+		sorted_keys = append(sorted_keys, k)
+	}
+	sort.Strings(sorted_keys)
+	for _, k := range sorted_keys {
+		label += fmt.Sprintf(`%s="%s",`, k, data[k])
 	}
 	label = strings.TrimRight(label, ",")
 	label += "}"
